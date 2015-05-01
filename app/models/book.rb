@@ -1,13 +1,14 @@
 class Book
-  attr_reader :title, :author, :description, :image_url, :detail_url, :page_count, :rating, :published_at
+  attr_reader :title, :author, :description, :isbn, :image_url, :detail_url, :page_count, :rating, :published_at
 
   def initialize(data)
-    info = (data['volumeInfo'] || {}).symbolize_keys!
+    @info = info = (data['volumeInfo'] || {}).symbolize_keys!
     @title        = info[:title]
     @author       = (info[:authors] || []).join(',')
     @image_url    = (info[:imageLinks] || {})['thumbnail']
     @detail_url   = info[:previewLink]
     @description  = info[:description]
+    @isbn         = info[:industryIdentifiers].detect{|entry| entry['type'] == 'ISBN_13'}['identifier']
     @page_count   = info[:pageCount]
     @rating       = info[:averageRating]
     @published_at = info[:publishedDate]
@@ -20,6 +21,7 @@ class Book
       image_url: image_url,
       description: description,
       page_count: page_count,
+      isbn: isbn,
       rating: rating,
       detail_url: detail_url,
       published_at: published_at
