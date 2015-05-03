@@ -8,7 +8,7 @@ class BookApi
   end
 
   def search
-    @book ||= results(search_data).map{|data| Book.new(data) }
+    results(search_data).map{|data| Book.new(data) }
   end
 
   def book

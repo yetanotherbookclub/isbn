@@ -2,7 +2,7 @@ class Book
   attr_reader :title, :author, :description, :isbn, :image_url, :detail_url, :page_count, :rating, :published_at
 
   def initialize(data)
-    @info = info = (data['volumeInfo'] || {}).symbolize_keys!
+    info = (data['volumeInfo'] || {}).symbolize_keys!
     @title        = info[:title]
     @author       = (info[:authors] || []).join(',')
     @image_url    = (info[:imageLinks] || {})['thumbnail']
