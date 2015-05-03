@@ -8,7 +8,10 @@ class Book
     @image_url    = (info[:imageLinks] || {})['thumbnail']
     @detail_url   = info[:previewLink]
     @description  = info[:description]
-    @isbn         = info[:industryIdentifiers].detect{|entry| entry['type'] == 'ISBN_13'}.try(:fetch, 'identifier')
+    if isbns = info[:industryIdentifiers]
+      match = isbns.detect{|entry| entry['type'] == 'ISBN_13'}
+      @isbn = match ? match['identifier'] : nil
+    end
     @page_count   = info[:pageCount]
     @rating       = info[:averageRating]
     @published_at = info[:publishedDate]
